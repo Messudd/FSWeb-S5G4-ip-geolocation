@@ -1,7 +1,6 @@
-//axios import buraya gelecek
 import axios from 'axios';
+import { requestData } from './request_data';
 
-const benimIP = '188.3.216.5';
 // ------------ değiştirmeyin --------------
 // licensed to Ergineer 2022
 require('babel-core/register');
@@ -18,6 +17,55 @@ async function ipAdresimiAl() {
       benimIP = a;
     });
 }
+
+const myIP = requestData.sorgu;
+
+console.log('my_ıp adress : ', myIP);
+
+function requestFunc(reqData) {
+  const cardDiv = document.createElement('div');
+  cardDiv.classList.add('card');
+  const cardImg = document.createElement('img');
+  cardImg.src = reqData['ülkebayrağı'];
+  const cardSeccondDiv = document.createElement('div');
+  cardSeccondDiv.classList.add('card-info');
+  const cardHeader = document.createElement('h3');
+  cardHeader.classList.add('ip');
+  cardHeader.textContent = `{${reqData.sorgu}}`;
+  const prgCountry = document.createElement('p');
+  prgCountry.classList.add('ulke');
+  prgCountry.textContent = `{ülke bilgisi (${reqData['ülkeKodu']})}`;
+  const prgEnlem = document.createElement('p');
+  prgEnlem.textContent = `Enlem: {${reqData.enlem}} Boylam: {${reqData.boylam}}`;
+  const prgCity = document.createElement('p');
+  prgCity.textContent = `Şehir: {${reqData['şehir']}}`;
+  const prgClock = document.createElement('p');
+  prgClock.textContent = `Saat dilimi: {${reqData.saatdilimi}}`;
+  const prgMoney = document.createElement('p');
+  prgMoney.textContent = `Para birimi: {${reqData.parabirimi}}`;
+  const prgISP = document.createElement('p');
+  prgISP.textContent = `ISP: {${reqData.isp}}`;
+
+  cardSeccondDiv.appendChild(cardHeader);
+  cardSeccondDiv.appendChild(prgCountry);
+  cardSeccondDiv.appendChild(prgEnlem);
+  cardSeccondDiv.appendChild(prgCity);
+  cardSeccondDiv.appendChild(prgClock);
+  cardSeccondDiv.appendChild(prgMoney);
+  cardSeccondDiv.appendChild(prgISP);
+  cardDiv.appendChild(cardImg);
+  cardDiv.appendChild(cardSeccondDiv);
+
+  return cardDiv;
+}
+
+const component = requestFunc(requestData);
+const cardParent = document.querySelector('.cards');
+
+cardParent.appendChild(component);
+
+console.log('component : ', component);
+
 // ------------ değiştirmeyin --------------
 
 /*
@@ -32,8 +80,9 @@ async function ipAdresimiAl() {
 /*
 	ADIM 2: Geri döndürülen verileri inceleyin, bu sizin ip bilgileriniz! Bileşen fonksiyonunuzu geliştirmek içindeki bu veri yapısını
 	iyice anlamanız gerekmektedir.
-	
+
 */
+
 /*
 	ADIM 3: Argümanı sadece 1 nesne kabül eden bir fonksiyon oluşturun.
     DOM metotlarını ve özelliklerini kullanarak, şunları gerçekleştirin:
