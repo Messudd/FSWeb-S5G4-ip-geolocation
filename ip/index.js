@@ -1,26 +1,24 @@
 //axios import buraya gelecek
+import axios from 'axios';
 
-var benimIP;
-
-
+const benimIP = '188.3.216.5';
 // ------------ değiştirmeyin --------------
 // licensed to Ergineer 2022
-require("babel-core/register");
-require("babel-polyfill");
-async function ipAdresimiAl(){
-	await axios({
-		method: 'get',
-		url: 'https://apis.ergineer.com/ipadresim',
-	})
-	.then(function (response) {
-		return response.data
-	})
-	.then(function (a) {
-		benimIP=a
-	});
-}				
+require('babel-core/register');
+require('babel-polyfill');
+async function ipAdresimiAl() {
+  await axios({
+    method: 'get',
+    url: 'https://apis.ergineer.com/ipadresim',
+  })
+    .then(function (response) {
+      return response.data;
+    })
+    .then(function (a) {
+      benimIP = a;
+    });
+}
 // ------------ değiştirmeyin --------------
-
 
 /*
 	ADIM 1: axios kullanarak, aşağıdaki URL'ye GET sorgusu atacağız
@@ -66,7 +64,5 @@ async function ipAdresimiAl(){
 	bilgisayarınızın IP adresini atayacaktır. 
 	Örnek dinamik URL kullanımı: var url = "https://apis.ergineer.com/ipgeoapi/"+benimIP; 
 */
-
-
 
 //kodlar buraya gelecek
