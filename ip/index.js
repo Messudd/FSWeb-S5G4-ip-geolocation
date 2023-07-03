@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { requestData } from './request_data';
 
+var benimIP;
 // ------------ değiştirmeyin --------------
 // licensed to Ergineer 2022
 require('babel-core/register');
@@ -17,63 +17,14 @@ async function ipAdresimiAl() {
       benimIP = a;
     });
 }
-
-const myIP = requestData.sorgu;
-
-console.log('my_ıp adress : ', myIP);
-
-function requestFunc(reqData) {
-  const cardDiv = document.createElement('div');
-  cardDiv.classList.add('card');
-  const cardImg = document.createElement('img');
-  cardImg.src = reqData['ülkebayrağı'];
-  const cardSeccondDiv = document.createElement('div');
-  cardSeccondDiv.classList.add('card-info');
-  const cardHeader = document.createElement('h3');
-  cardHeader.classList.add('ip');
-  cardHeader.textContent = `{${reqData.sorgu}}`;
-  const prgCountry = document.createElement('p');
-  prgCountry.classList.add('ulke');
-  prgCountry.textContent = `{ülke bilgisi (${reqData['ülkeKodu']})}`;
-  const prgEnlem = document.createElement('p');
-  prgEnlem.textContent = `Enlem: {${reqData.enlem}} Boylam: {${reqData.boylam}}`;
-  const prgCity = document.createElement('p');
-  prgCity.textContent = `Şehir: {${reqData['şehir']}}`;
-  const prgClock = document.createElement('p');
-  prgClock.textContent = `Saat dilimi: {${reqData.saatdilimi}}`;
-  const prgMoney = document.createElement('p');
-  prgMoney.textContent = `Para birimi: {${reqData.parabirimi}}`;
-  const prgISP = document.createElement('p');
-  prgISP.textContent = `ISP: {${reqData.isp}}`;
-
-  cardSeccondDiv.appendChild(cardHeader);
-  cardSeccondDiv.appendChild(prgCountry);
-  cardSeccondDiv.appendChild(prgEnlem);
-  cardSeccondDiv.appendChild(prgCity);
-  cardSeccondDiv.appendChild(prgClock);
-  cardSeccondDiv.appendChild(prgMoney);
-  cardSeccondDiv.appendChild(prgISP);
-  cardDiv.appendChild(cardImg);
-  cardDiv.appendChild(cardSeccondDiv);
-
-  return cardDiv;
-}
-
-const component = requestFunc(requestData);
-const cardParent = document.querySelector('.cards');
-
-cardParent.appendChild(component);
-
-console.log('component : ', component);
-
 // ------------ değiştirmeyin --------------
 
 /*
 	ADIM 1: axios kullanarak, aşağıdaki URL'ye GET sorgusu atacağız
     (tag içindeki yere kendi ipnizi yazarak URL'yi oluşturun):
     https://apis.ergineer.com/ipgeoapi/<ipniz>
-	
-	NOT: Bilgisayarın IP adresini öğrenmek için: https://apis.ergineer.com/ipadresim 
+
+	NOT: Bilgisayarın IP adresini öğrenmek için: https://apis.ergineer.com/ipadresim
 	ADIM 5'e gelene kadar fonksiyonunuzu test etmek için ip nizi URL'ye manuel olarak ekleyebilirsiniz.
 */
 
@@ -86,7 +37,7 @@ console.log('component : ', component);
 /*
 	ADIM 3: Argümanı sadece 1 nesne kabül eden bir fonksiyon oluşturun.
     DOM metotlarını ve özelliklerini kullanarak, şunları gerçekleştirin:
-	
+
 	<div class="card">
 	<img src={ülke bayrağı url} />
 	<div class="card-info">
@@ -102,16 +53,57 @@ console.log('component : ', component);
 */
 
 /*
-	ADIM 4: API'den alınan verileri kullanarak ADIM 3'te verilen yapıda bir kart oluşturun ve 
-	bu kartı DOM olarak .cards elementinin içine ekleyin. 
+	ADIM 4: API'den alınan verileri kullanarak ADIM 3'te verilen yapıda bir kart oluşturun ve
+	bu kartı DOM olarak .cards elementinin içine ekleyin.
 */
 
 /*
-	ADIM 5: Manuel olarak eklediğiniz IP adresini dinamiğe dönüştürün. 
-	Sayfanın en üstünde ---değiştirmeyin--- etiketleri arasında yer alan asenkron ipAdresimiAl() fonksiyonuna 
-	sorgu atarak bilgisayarınız IP adresini dinamik olarak aldıracaksınız. Bu fonksiyon asenkron olarak çağırıldığında `benimIP` değişkenine 
-	bilgisayarınızın IP adresini atayacaktır. 
-	Örnek dinamik URL kullanımı: var url = "https://apis.ergineer.com/ipgeoapi/"+benimIP; 
+	ADIM 5: Manuel olarak eklediğiniz IP adresini dinamiğe dönüştürün.
+	Sayfanın en üstünde ---değiştirmeyin--- etiketleri arasında yer alan asenkron ipAdresimiAl() fonksiyonuna
+	sorgu atarak bilgisayarınız IP adresini dinamik olarak aldıracaksınız. Bu fonksiyon asenkron olarak çağırıldığında `benimIP` değişkenine
+	bilgisayarınızın IP adresini atayacaktır.
+	Örnek dinamik URL kullanımı: var url = "https://apis.ergineer.com/ipgeoapi/"+benimIP;
 */
+const flagTR =
+  'https://tr.wikipedia.org/wiki/T%C3%BCrk_bayra%C4%9F%C4%B1#/media/Dosya:Flag_of_Turkey.svg';
 
-//kodlar buraya gelecek
+const cardParentDiv = document.querySelector('.cards');
+
+function createNewCard(dataInfo) {
+  const {
+    sorgu,
+    şehir: city,
+    ülkeKodu: countryCode,
+    enlem,
+    boylam,
+    saatdilimi,
+    parabirimi,
+    isp,
+  } = dataInfo;
+  const cardHtml = `<div class="card">
+                      <img src= ${flagTR} alt = 'Turk bayragi gorseli ... '/>
+                      <div class="card-info">
+                        <h3 class="ip">${sorgu}</h3>
+                        <p class="ulke">{ülke bilgisi (${countryCode})}</p>
+                        <p>Enlem: ${enlem} Boylam: ${boylam}</p>
+                        <p>Şehir: ${city}</p>
+                        <p>Saat dilimi: ${saatdilimi}</p>
+                        <p>Para birimi: ${parabirimi}</p>
+                        <p>ISP: ${isp}</p>
+                      </div>
+                    </div>`;
+
+  return cardHtml;
+}
+
+async function getLocation(myIP) {
+  await setTimeout(() => {
+    axios
+      .get('https://apis.ergineer.com/ipgeoapi/188.3.216.5')
+      .then((responce) => {
+        const cardContent = createNewCard(responce.data);
+        cardParentDiv.innerHTML = cardContent;
+      });
+  }, 3000);
+}
+getLocation();
